@@ -15,8 +15,9 @@
 #include <libsnark/gadgetlib1/gadgets/hashes/sha256/sha256_gadget.hpp>
 #include <libsnark/gadgetlib1/gadgets/merkle_tree/merkle_tree_check_read_gadget.hpp>
 #include "tinyformat.h"
-#include "sync.h"
-#include "amount.h"
+//#include "sync.h"
+#include <mutex>
+//#include "amount.h"
 
 using namespace libsnark;
 
@@ -24,13 +25,16 @@ namespace libzcash {
 
 #include "zcash/circuit/gadget.tcc"
 
-CCriticalSection cs_ParamsIO;
-CCriticalSection cs_LoadKeys;
+//CCriticalSection cs_ParamsIO;
+//CCriticalSection cs_LoadKeys;
+std::mutex cs_ParamsIO;
+//std::mutex cs_LoadKeys;
+static const int64_t MAX_MONEY = 21000000 * 100000000;
 
 template<typename T>
 void saveToFile(const std::string path, T& obj) {
-    LOCK(cs_ParamsIO);
-
+    //LOCK(cs_ParamsIO);
+    std::lock_guard<std::mutex> lock(cs_ParamsIO);
     std::stringstream ss;
     ss << obj;
     std::ofstream fh;
@@ -43,8 +47,8 @@ void saveToFile(const std::string path, T& obj) {
 
 template<typename T>
 void loadFromFile(const std::string path, T& objIn) {
-    LOCK(cs_ParamsIO);
-
+   //LOCK(cs_ParamsIO);
+    std::lock_guard<std::mutex> lock(cs_ParamsIO);
     std::stringstream ss;
     std::ifstream fh(path, std::ios::binary);
 
