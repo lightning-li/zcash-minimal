@@ -1,8 +1,8 @@
-#include "Address.hpp"
-#include "NoteEncryption.hpp"
-#include "hash.h"
-#include "prf.h"
-#include "streams.h"
+#include "zcash/Address.hpp"
+#include "zcash/NoteEncryption.hpp"
+#include "utils/hash.h"
+#include "zcash/prf.h"
+#include "utils/streams.h"
 
 namespace libzcash {
 

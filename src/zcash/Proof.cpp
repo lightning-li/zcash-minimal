@@ -1,4 +1,4 @@
-#include "Proof.hpp"
+#include "zcash/Proof.hpp"
 
 #include "crypto/common.h"
 

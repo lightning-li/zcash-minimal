@@ -6,8 +6,8 @@ within the zkSNARK circuit.
 #ifndef ZC_PRF_H_
 #define ZC_PRF_H_
 
-#include "uint256.h"
-#include "uint252.h"
+#include "utils/uint256.h"
+#include "utils/uint252.h"
 
 uint256 PRF_addr_a_pk(const uint252& a_sk);
 uint256 PRF_addr_sk_enc(const uint252& a_sk);

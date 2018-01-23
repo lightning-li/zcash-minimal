@@ -1,15 +1,15 @@
 #ifndef ZC_JOINSPLIT_H_
 #define ZC_JOINSPLIT_H_
 
-#include "Zcash.h"
-#include "Proof.hpp"
-#include "Address.hpp"
-#include "Note.hpp"
-#include "IncrementalMerkleTree.hpp"
-#include "NoteEncryption.hpp"
+#include "zcash/Zcash.h"
+#include "zcash/Proof.hpp"
+#include "zcash/Address.hpp"
+#include "zcash/Note.hpp"
+#include "zcash/IncrementalMerkleTree.hpp"
+#include "zcash/NoteEncryption.hpp"
 
-#include "uint256.h"
-#include "uint252.h"
+#include "utils/uint256.h"
+#include "utils/uint252.h"
 
 #include <boost/array.hpp>
 

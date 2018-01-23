@@ -5,10 +5,10 @@
 #include <boost/optional.hpp>
 #include <boost/static_assert.hpp>
 
-#include "uint256.h"
-#include "serialize.h"
+#include "utils/uint256.h"
+#include "utils/serialize.h"
 
-#include "Zcash.h"
+#include "zcash/Zcash.h"
 
 namespace libzcash {
 

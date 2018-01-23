@@ -1,9 +1,9 @@
-#include "Note.hpp"
-#include "prf.h"
+#include "zcash/Note.hpp"
+#include "zcash/prf.h"
 #include "crypto/sha256.h"
 
-#include "version.h"
-#include "streams.h"
+#include "utils/version.h"
+#include "utils/streams.h"
 
 #include "zcash/util.h"
 

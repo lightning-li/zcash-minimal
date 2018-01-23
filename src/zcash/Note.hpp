@@ -1,10 +1,10 @@
 #ifndef ZC_NOTE_H_
 #define ZC_NOTE_H_
 
-#include "uint256.h"
-#include "Zcash.h"
-#include "Address.hpp"
-#include "NoteEncryption.hpp"
+#include "utils/uint256.h"
+#include "zcash/Zcash.h"
+#include "zcash/Address.hpp"
+#include "zcash/NoteEncryption.hpp"
 
 namespace libzcash {
 

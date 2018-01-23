@@ -1,4 +1,4 @@
-#include "prf.h"
+#include "zcash/prf.h"
 #include "crypto/sha256.h"
 
 uint256 PRF(bool a, bool b, bool c, bool d,
