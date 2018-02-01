@@ -1,7 +1,21 @@
 
+CURRENT_DIR = $(shell pwd)
+
 SNARK = snark/libsnark.a
 SNARK_PATH = snark
 
-$(SNARK):
-		@echo "**************building snark now****************" && cd $(SNARK_PATH) && pwd && $(MAKE) lib STATIC=1 CURVE=ALT_BN128 NO_PROCPS=1 NO_GTEST=1 NO_SUPERCOP=1 OPTFLAGS="-O2 -march=x86-64" && $(MAKE) install PREFIX=.
+LIBSNARK_CXXFLAGS = -fPIC -DBINARY_OUTPUT -DNO_PT_COMPRESSION=1 -fstack-protector-all
+LIBSNARK_CONFIG_FLAGS = CURVE=ALT_BN128 NO_PROCPS=1 NO_DOCS=1 STATIC=1 NO_SUPERCOP=1 FEATUREFLAGS=-DMONTGOMERY_OUTPUT NO_COPY_DEPINST=1 NO_COMPILE_LIBGTEST=1
 
+
+SODIUM = libsodium-1.0.12/build/lib/libsodium.a
+SODIUM_PATH = libsodium-1.0.12
+
+all: $(SNARK)\
+	 $(SODIUM)
+
+$(SNARK): $(wildcard snark/src/*)
+		@echo "**************building snark now****************" && $(AM_V_at) CXXFLAGS="$(LIBSNARK_CXXFLAGS)" $(MAKE) $(AM_MAKEFLAGS) -C $(SNARK_PATH)/ install PREFIX=build $(LIBSNARK_CONFIG_FLAGS) OPTFLAGS="-O2 -march=x86-64" 
+
+$(SODIUM): $(wildcard libsodium-1.0.12/src/*)
+		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH) && $(MAKE) install

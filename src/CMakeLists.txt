@@ -8,5 +8,6 @@ set(ZCASH_MINIMAL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${ZCASH_MINIMAL_SOURCE} 
                     ${ZCASH_MINIMAL_SOURCE}/3rd/libsodium-1.0.12/src/libsodium/include
-                    ${ZCASH_MINIMAL_SOURCE/3rd/snark}
+                    ${ZCASH_MINIMAL_SOURCE/3rd/snark/build/include}
+                    
                     )
