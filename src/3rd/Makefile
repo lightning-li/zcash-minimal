@@ -18,4 +18,14 @@ $(SNARK): $(wildcard snark/src/*)
 		@echo "**************building snark now****************" && $(AM_V_at) CXXFLAGS="$(LIBSNARK_CXXFLAGS)" $(MAKE) $(AM_MAKEFLAGS) -C $(SNARK_PATH)/ install PREFIX=build $(LIBSNARK_CONFIG_FLAGS) OPTFLAGS="-O2 -march=x86-64" 
 
 $(SODIUM): $(wildcard libsodium-1.0.12/src/*)
-		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH) && $(MAKE) install
+		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH)/build && $(MAKE) install
+
+clean:
+	SNARK_clean \
+	SODIUM_clean
+
+SNARK_clean:
+		@echo "********************Cleaning snark now***************" && cd $(SNARK_PATH) && make clean
+
+SODIUM_clean:
+		@echo "********************Cleaning sodium now**************" && cd $(SODIUM_PATH) && make clean
