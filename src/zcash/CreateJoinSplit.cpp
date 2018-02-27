@@ -4,8 +4,8 @@
 
 //#include "../util.h"
 //#include "primitives/transaction.h"
-#include "utils/JoinSplit.hpp"
-#include "utils/ShieldTransaction.h"
+#include "zcash/JoinSplit.hpp"
+#include "zcash/ShieldTransaction.h"
 #include <libsnark/common/profiling.hpp>
 
 using namespace libzcash;
@@ -14,8 +14,17 @@ int main(int argc, char **argv)
 {
     libsnark::start_profiling();
 
-    auto p = ZCJoinSplit::Prepared((ZC_GetParamsDir() / "sprout-verifying.key").string(),
-                                   (ZC_GetParamsDir() / "sprout-proving.key").string());
+    char* home = getenv("HOME");
+    string param_path;
+    
+    if (home == NULL || strlen(home)) {
+        param_path = "/.zcash-params";
+    } else {
+        param_path = string(home) + "/.zcash-params";
+    }
+
+    auto p = ZCJoinSplit::Prepared(param_path + "/sprout-verifying.key"),
+                                  (param_path + "/sprout-proving.key"));
 
     // construct a proof.
 

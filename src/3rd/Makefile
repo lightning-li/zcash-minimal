@@ -20,7 +20,7 @@ $(SNARK): $(wildcard snark/src/*)
 $(SODIUM): $(wildcard libsodium-1.0.12/src/*)
 		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH)/build && $(MAKE) install
 
-clean:
+clean:\
 	SNARK_clean \
 	SODIUM_clean
 
