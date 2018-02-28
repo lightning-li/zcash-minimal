@@ -2,7 +2,8 @@
 #ifndef BUBI_SHIELDTRANSACTION_H
 #define BUBI_SHIELDTRANSACTION_H
 
-#include <boost/array.h>
+//#include <boost/array.h>
+#include <array>
 #include "utils/uint256.h"
 
 
@@ -16,16 +17,16 @@ public:
     // 每一个 JSDescription 都关联着一个由历史上出现过的所有 note commitment 组成的 Merkle 树根哈希值 
     uint256 anchor;
 
-    boost::array<uint256, ZC_NUM_JS_INPUTS> nullifiers;
-    boost::array<uint256, ZC_NUM_JS_OUTPUTS> commitments;
+    std::array<uint256, ZC_NUM_JS_INPUTS> nullifiers;
+    std::array<uint256, ZC_NUM_JS_OUTPUTS> commitments;
 
     uint256 ephemeralKey;
 
-    boost::array<ZCNoteDecryption::Ciphertext, ZC_NUM_JS_OUTPUTS> ciphertexts = {{ {{0}} }};
+    std::array<ZCNoteDecryption::Ciphertext, ZC_NUM_JS_OUTPUTS> ciphertexts = {{ {{0}} }};
 
     uint256 randomSeed;
 
-    boost::array<uint256, ZC_NUM_JS_INPUTS> macs;
+    std::array<uint256, ZC_NUM_JS_INPUTS> macs;
 
     libzcash::ZCProof proof;
 
@@ -36,8 +37,8 @@ public:
     JSDescription(ZCJoinSplit& params
                 const uint256& pubKeyHash,
                 const uint256& rt,
-                const boost::array<libzcash::JSInput, ZC_NUM_JS_INPUTS>& inputs,
-                const boost::array<libzcash::JSOutput, ZC_NUM_JS_OUTPUTS>& outputs,
+                const std::array<libzcash::JSInput, ZC_NUM_JS_INPUTS>& inputs,
+                const std::array<libzcash::JSOutput, ZC_NUM_JS_OUTPUTS>& outputs,
                 int64_t vpub_old,
                 int64_t vpub_new,
                 bool computeProof = true,
@@ -47,10 +48,10 @@ public:
     static JSDescription Randomized(ZCJoinSplit& params,
                 const uint256& pubKeyHash,
                 const uint256& rt,
-                boost::array<libzcash::JSInput, ZC_NUM_JS_INPUTS>& inputs,
-                boost::array<libzcash::JSOutput, ZC_NUM_JS_OUTPUTS>& outputs,
-                boost::array<size_t, ZC_NUM_JS_INPUTS>& inputMap,
-                boost::array<size_t, ZC_NUM_JS_OUTPUTS>& outputMap,
+                std::array<libzcash::JSInput, ZC_NUM_JS_INPUTS>& inputs,
+                std::array<libzcash::JSOutput, ZC_NUM_JS_OUTPUTS>& outputs,
+                std::array<size_t, ZC_NUM_JS_INPUTS>& inputMap,
+                std::array<size_t, ZC_NUM_JS_OUTPUTS>& outputMap,
                 int64_t vpub_old,
                 int64_t vpub_new,
                 bool computeProof = true,

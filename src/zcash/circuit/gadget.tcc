@@ -4,6 +4,8 @@
 #include "zcash/circuit/merkle.tcc"
 #include "zcash/circuit/note.tcc"
 
+#include <array>
+
 template<typename FieldT, size_t NumInputs, size_t NumOutputs>
 class joinsplit_gadget : gadget<FieldT> {
 private:
@@ -14,9 +16,9 @@ private:
 
     std::shared_ptr<digest_variable<FieldT>> zk_merkle_root;
     std::shared_ptr<digest_variable<FieldT>> zk_h_sig;
-    boost::array<std::shared_ptr<digest_variable<FieldT>>, NumInputs> zk_input_nullifiers;
-    boost::array<std::shared_ptr<digest_variable<FieldT>>, NumInputs> zk_input_macs;
-    boost::array<std::shared_ptr<digest_variable<FieldT>>, NumOutputs> zk_output_commitments;
+    std::array<std::shared_ptr<digest_variable<FieldT>>, NumInputs> zk_input_nullifiers;
+    std::array<std::shared_ptr<digest_variable<FieldT>>, NumInputs> zk_input_macs;
+    std::array<std::shared_ptr<digest_variable<FieldT>>, NumOutputs> zk_output_commitments;
     pb_variable_array<FieldT> zk_vpub_old;
     pb_variable_array<FieldT> zk_vpub_new;
 
@@ -26,21 +28,21 @@ private:
     pb_variable_array<FieldT> zk_total_uint64;
 
     // Input note gadgets
-    boost::array<std::shared_ptr<input_note_gadget<FieldT>>, NumInputs> zk_input_notes;
-    boost::array<std::shared_ptr<PRF_pk_gadget<FieldT>>, NumInputs> zk_mac_authentication;
+    std::array<std::shared_ptr<input_note_gadget<FieldT>>, NumInputs> zk_input_notes;
+    std::array<std::shared_ptr<PRF_pk_gadget<FieldT>>, NumInputs> zk_mac_authentication;
 
     // Output note gadgets
-    boost::array<std::shared_ptr<output_note_gadget<FieldT>>, NumOutputs> zk_output_notes;
+    std::array<std::shared_ptr<output_note_gadget<FieldT>>, NumOutputs> zk_output_notes;
 
 public:
     // PRF_pk only has a 1-bit domain separation "nonce"
     // for different macs.
-    BOOST_STATIC_ASSERT(NumInputs <= 2);
-
+    //BOOST_STATIC_ASSERT(NumInputs <= 2);
+    static_assert(NumInputs <= 2, "NumInputs is not less than 2.");
     // PRF_rho only has a 1-bit domain separation "nonce"
     // for different output `rho`.
-    BOOST_STATIC_ASSERT(NumOutputs <= 2);
-
+    //BOOST_STATIC_ASSERT(NumOutputs <= 2);
+    static_assert(NumOutputs <= 2, "NumOutputs is not less than 2.");
     joinsplit_gadget(protoboard<FieldT> &pb) : gadget<FieldT>(pb) {
         // Verification
         {
@@ -190,8 +192,8 @@ public:
         const uint252& phi,
         const uint256& rt,
         const uint256& h_sig,
-        const boost::array<JSInput, NumInputs>& inputs,
-        const boost::array<Note, NumOutputs>& outputs,
+        const std::array<JSInput, NumInputs>& inputs,
+        const std::array<Note, NumOutputs>& outputs,
         uint64_t vpub_old,
         uint64_t vpub_new
     ) {
@@ -285,9 +287,9 @@ public:
     static r1cs_primary_input<FieldT> witness_map(
         const uint256& rt,
         const uint256& h_sig,
-        const boost::array<uint256, NumInputs>& macs,
-        const boost::array<uint256, NumInputs>& nullifiers,
-        const boost::array<uint256, NumOutputs>& commitments,
+        const std::array<uint256, NumInputs>& macs,
+        const std::array<uint256, NumInputs>& nullifiers,
+        const std::array<uint256, NumOutputs>& commitments,
         uint64_t vpub_old,
         uint64_t vpub_new
     ) {

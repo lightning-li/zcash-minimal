@@ -21,7 +21,8 @@
 #include <utility>
 #include <vector>
 
-#include <boost/array.hpp>
+//#include <boost/array.hpp>
+#include <array>
 #include <boost/optional.hpp>
 
 class CScript;
@@ -519,9 +520,9 @@ template<typename Stream, typename T> void Unserialize(Stream& is, boost::option
 /**
  * array
  */
-template<typename T, std::size_t N> unsigned int GetSerializeSize(const boost::array<T, N> &item, int nType, int nVersion);
-template<typename Stream, typename T, std::size_t N> void Serialize(Stream& os, const boost::array<T, N>& item, int nType, int nVersion);
-template<typename Stream, typename T, std::size_t N> void Unserialize(Stream& is, boost::array<T, N>& item, int nType, int nVersion);
+template<typename T, std::size_t N> unsigned int GetSerializeSize(const std::array<T, N> &item, int nType, int nVersion);
+template<typename Stream, typename T, std::size_t N> void Serialize(Stream& os, const std::array<T, N>& item, int nType, int nVersion);
+template<typename Stream, typename T, std::size_t N> void Unserialize(Stream& is, std::array<T, N>& item, int nType, int nVersion);
 
 /**
  * pair
@@ -774,7 +775,7 @@ void Unserialize(Stream& is, boost::optional<T>& item, int nType, int nVersion)
  * array
  */
 template<typename T, std::size_t N>
-unsigned int GetSerializeSize(const boost::array<T, N> &item, int nType, int nVersion)
+unsigned int GetSerializeSize(const std::array<T, N> &item, int nType, int nVersion)
 {
     unsigned int size = 0;
     for (size_t i = 0; i < N; i++) {
@@ -784,7 +785,7 @@ unsigned int GetSerializeSize(const boost::array<T, N> &item, int nType, int nVe
 }
 
 template<typename Stream, typename T, std::size_t N>
-void Serialize(Stream& os, const boost::array<T, N>& item, int nType, int nVersion)
+void Serialize(Stream& os, const std::array<T, N>& item, int nType, int nVersion)
 {
     for (size_t i = 0; i < N; i++) {
         Serialize(os, item[i], nType, nVersion);
@@ -792,7 +793,7 @@ void Serialize(Stream& os, const boost::array<T, N>& item, int nType, int nVersi
 }
 
 template<typename Stream, typename T, std::size_t N>
-void Unserialize(Stream& is, boost::array<T, N>& item, int nType, int nVersion)
+void Unserialize(Stream& is, std::array<T, N>& item, int nType, int nVersion)
 {
     for (size_t i = 0; i < N; i++) {
         Unserialize(is, item[i], nType, nVersion);
