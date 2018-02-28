@@ -4,6 +4,7 @@
 #include <deque>
 #include <boost/optional.hpp>
 #include <boost/static_assert.hpp>
+#include <array>
 
 #include "utils/uint256.h"
 #include "utils/serialize.h"

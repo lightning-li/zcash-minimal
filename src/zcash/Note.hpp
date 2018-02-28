@@ -6,7 +6,7 @@
 #include "zcash/Address.hpp"
 #include "zcash/NoteEncryption.hpp"
 
-#include<array>
+#include <array>
 
 namespace libzcash {
 
