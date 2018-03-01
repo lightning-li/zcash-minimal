@@ -1,7 +1,7 @@
 #include "zcash/NoteEncryption.hpp"
 #include <stdexcept>
 #include "sodium.h"
-#include <boost/static_assert.hpp>
+//#include <boost/static_assert.hpp>
 #include "zcash/prf.h"
 
 #define NOTEENCRYPTION_CIPHER_KEYSIZE 32
@@ -53,9 +53,12 @@ NoteEncryption<MLEN>::NoteEncryption(uint256 hSig) : nonce(0), hSig(hSig) {
     // All of this code assumes crypto_scalarmult_BYTES is 32
     // There's no reason that will _ever_ change, but for
     // completeness purposes, let's check anyway.
-    BOOST_STATIC_ASSERT(32 == crypto_scalarmult_BYTES);
-    BOOST_STATIC_ASSERT(32 == crypto_scalarmult_SCALARBYTES);
-    BOOST_STATIC_ASSERT(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES);
+    //BOOST_STATIC_ASSERT(32 == crypto_scalarmult_BYTES);
+    //BOOST_STATIC_ASSERT(32 == crypto_scalarmult_SCALARBYTES);
+    //BOOST_STATIC_ASSERT(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES);
+    static_assert(32 == crypto_scalarmult_BYTES, "crypto_scalarmult_BYTES is not 32");
+    static_assert(32 == crypto_scalarmult_SCALARBYTES, "crypto_scalarmult_SCALARBYTES is not 32");
+    static_assert(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES, "NOTEENCRYPTION_AUTH_BYTES is not equal crypto_aead_chacha20poly1305_ABYTES")
 
     // Create the ephemeral keypair
     esk = random_uint256();

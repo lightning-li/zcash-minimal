@@ -6,7 +6,7 @@ https://github.com/zcash/zips/blob/master/protocol/protocol.pdf
 #ifndef ZC_NOTE_ENCRYPTION_H_
 #define ZC_NOTE_ENCRYPTION_H_
 
-#include <boost/array.hpp>
+//#include <boost/array.hpp>
 #include "utils/uint256.h"
 #include "utils/uint252.h"
 

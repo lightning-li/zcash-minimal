@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <boost/foreach.hpp>
+//#include <boost/foreach.hpp>
 
 #include "zcash/IncrementalMerkleTree.hpp"
 #include "crypto/sha256.h"
@@ -108,25 +108,29 @@ void IncrementalMerkleTree<Depth, Hash>::append(Hash obj) {
 
     if (!left) {
         // Set the left leaf
-        left = obj;
+        left = make_shared<Hash>(obj);
     } else if (!right) {
         // Set the right leaf
-        right = obj;
+        right = make_shared<Hash>(obj);
     } else {
         // Combine the leaves and propagate it up the tree
-        boost::optional<Hash> combined = Hash::combine(*left, *right);
-
+        //boost::optional<Hash> combined = Hash::combine(*left, *right);
+        std::shared_ptr<Hash> combined = std::make_shared<Hash>(Hash::combine(*left, *right));
         // Set the "left" leaf to the object and make the "right" leaf none
-        left = obj;
-        right = boost::none;
+        *left = obj;
+        //right = boost::none;
+        right = nullptr;
 
         for (size_t i = 0; i < Depth; i++) {
             if (i < parents.size()) {
                 if (parents[i]) {
-                    combined = Hash::combine(*parents[i], *combined);
-                    parents[i] = boost::none;
+                    //combined = Hash::combine(*parents[i], *combined);
+                    *combined = Hash::combine(*parents[i], *combined);
+                    //parents[i] = boost::none;
+                    parents[i] = nullptr;
                 } else {
-                    parents[i] = *combined;
+                    //parents[i] = *combined;
+                    parents[i] = std::make_shared<Hash>(*combined);
                     break;
                 }
             } else {
@@ -150,7 +154,8 @@ bool IncrementalMerkleTree<Depth, Hash>::is_complete(size_t depth) const {
         return false;
     }
 
-    BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    //BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    for(auto parent : parents) {
         if (!parent) {
             return false;
         }
@@ -181,7 +186,8 @@ size_t IncrementalMerkleTree<Depth, Hash>::next_depth(size_t skip) const {
 
     size_t d = 1;
 
-    BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    //BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    for (auto parent : parents) {
         if (!parent) {
             if (skip) {
                 skip--;
@@ -209,7 +215,8 @@ Hash IncrementalMerkleTree<Depth, Hash>::root(size_t depth,
 
     size_t d = 1;
 
-    BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    //BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    for (auto parent : parents) {
         if (parent) {
             root = Hash::combine(*parent, root);
         } else {
@@ -252,7 +259,8 @@ MerklePath IncrementalMerkleTree<Depth, Hash>::path(std::deque<Hash> filler_hash
 
     size_t d = 1;
 
-    BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    //BOOST_FOREACH(const boost::optional<Hash>& parent, parents) {
+    for (auto parent : parents) {
         if (parent) {
             index.push_back(true);
             path.push_back(*parent);
@@ -271,7 +279,8 @@ MerklePath IncrementalMerkleTree<Depth, Hash>::path(std::deque<Hash> filler_hash
     }
 
     std::vector<std::vector<bool>> merkle_path;
-    BOOST_FOREACH(Hash b, path)
+    //BOOST_FOREACH(Hash b, path)
+    for (auto b : path)
     {
         std::vector<unsigned char> hashv(b.begin(), b.end());
 
@@ -302,7 +311,8 @@ void IncrementalWitness<Depth, Hash>::append(Hash obj) {
 
         if (cursor->is_complete(cursor_depth)) {
             filled.push_back(cursor->root(cursor_depth));
-            cursor = boost::none;
+            //cursor = boost::none;
+            cursor = nullptr;
         }
     } else {
         cursor_depth = tree.next_depth(filled.size());
@@ -314,7 +324,7 @@ void IncrementalWitness<Depth, Hash>::append(Hash obj) {
         if (cursor_depth == 0) {
             filled.push_back(obj);
         } else {
-            cursor = IncrementalMerkleTree<Depth, Hash>();
+            cursor = std::make_shared<IncrementalMerkleTree<Depth, Hash> >();
             cursor->append(obj);
         }
     }
