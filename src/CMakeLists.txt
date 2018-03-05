@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(zcash-minimal)
-
+set(CMAKE_CXX_STANDARD 11)
 execute_process(COMMAND make all WORKING_DIRECTORY ${ZCASH_MINIMAL_SOURCE}/3rd)
 
 set(ZCASH_MINIMAL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
