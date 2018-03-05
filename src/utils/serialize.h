@@ -20,6 +20,7 @@
 #include <string.h>
 #include <utility>
 #include <vector>
+#include <memory>
 
 //#include <boost/array.hpp>
 #include <array>
