@@ -8,6 +8,7 @@
 #include "zcash/Zcash.h"
 #include "zcash/NoteEncryption.hpp"
 #include "zcash/Proof.hpp"
+#include "zcash/JoinSplit.hpp"
 
 class JSDescription {
 public:
@@ -36,7 +37,7 @@ public:
 
     }
 
-    JSDescription(ZCJoinSplit& params
+    JSDescription(ZCJoinSplit& params,
                 const uint256& pubKeyHash,
                 const uint256& rt,
                 const std::array<libzcash::JSInput, ZC_NUM_JS_INPUTS>& inputs,
