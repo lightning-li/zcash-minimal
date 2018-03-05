@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(zcash-minimal)
 set(CMAKE_CXX_STANDARD 11)
-
+set(CMAKE_CXX_FLAGS "-DCURVE_ALT_BN128")
 set(ZCASH_MINIMAL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${ZCASH_MINIMAL_SOURCE}
