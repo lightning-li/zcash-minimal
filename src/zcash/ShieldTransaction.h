@@ -109,6 +109,6 @@ public:
     friend bool operator!=(const JSDescription& a, const JSDescription& b) {
         return !(a == b);
     }
-}
+};
 
 #endif
