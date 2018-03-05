@@ -9,7 +9,7 @@
 //#include <openssl/crypto.h>
 // learned from openssl/crypto/mem_clr.c
 
-typedef void *(*memset_t)(void *, int, size);
+typedef void *(*memset_t)(void *, int, size_t);
 static volatile memset_t memset_func = memset;
 
 void OPENSSL_cleanse(void *ptr, size_t len) {
