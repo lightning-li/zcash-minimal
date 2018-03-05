@@ -4,6 +4,8 @@
 
 //#include <boost/array.h>
 #include <array>
+#include <functional>
+
 #include "utils/uint256.h"
 #include "zcash/Zcash.h"
 #include "zcash/NoteEncryption.hpp"
