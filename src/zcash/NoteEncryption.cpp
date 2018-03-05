@@ -58,7 +58,7 @@ NoteEncryption<MLEN>::NoteEncryption(uint256 hSig) : nonce(0), hSig(hSig) {
     //BOOST_STATIC_ASSERT(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES);
     static_assert(32 == crypto_scalarmult_BYTES, "crypto_scalarmult_BYTES is not 32");
     static_assert(32 == crypto_scalarmult_SCALARBYTES, "crypto_scalarmult_SCALARBYTES is not 32");
-    static_assert(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES, "NOTEENCRYPTION_AUTH_BYTES is not equal crypto_aead_chacha20poly1305_ABYTES")
+    static_assert(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES, "NOTEENCRYPTION_AUTH_BYTES is not equal crypto_aead_chacha20poly1305_ABYTES");
 
     // Create the ephemeral keypair
     esk = random_uint256();
