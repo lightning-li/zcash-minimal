@@ -48,7 +48,7 @@ JSDescription JSDescription::Randomized(
                 std::function<int(int)> gen
 )
 {
-    inputMap = {0， 1};
+    inputMap = {0, 1};
     outputMap = {0, 1};
      assert(gen);
 
@@ -62,7 +62,7 @@ bool JSDescription::Verify(ZCJoinSplit& params,
                            libzcash::ProofVerifier& verifier,
                            const uint256& pubKeyHash) const
 {
-    return params.verify(proof, verifier, pubKeyHash，randomSeed, macs, nullifiers, commitments, vpub_old, vpub_new, anchor);
+    return params.verify(proof, verifier, pubKeyHash, randomSeed, macs, nullifiers, commitments, vpub_old, vpub_new, anchor);
 }
 
 uint256 JSDescription::h_sig(ZCJoinSplit& params, const uint256& pubKeyHash) const {

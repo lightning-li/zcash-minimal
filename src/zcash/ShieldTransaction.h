@@ -5,7 +5,9 @@
 //#include <boost/array.h>
 #include <array>
 #include "utils/uint256.h"
-
+#include "zcash/Zcash.h"
+#include "zcash/NoteEncryption.hpp"
+#include "zcash/Proof.hpp"
 
 class JSDescription {
 public:
