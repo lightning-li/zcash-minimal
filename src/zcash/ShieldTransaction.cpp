@@ -1,7 +1,7 @@
 
 #include "zcash/ShieldTransaction.h"
 
-JSDescription::JSDescription(ZCJoinSplit& params
+JSDescription::JSDescription(ZCJoinSplit& params,
                 const uint256& pubKeyHash,
                 const uint256& rt,
                 const std::array<libzcash::JSInput, ZC_NUM_JS_INPUTS>& inputs,

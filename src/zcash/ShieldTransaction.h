@@ -11,6 +11,7 @@
 #include "zcash/NoteEncryption.hpp"
 #include "zcash/Proof.hpp"
 #include "zcash/JoinSplit.hpp"
+#include "zcash/random.h"
 
 class JSDescription {
 public:
