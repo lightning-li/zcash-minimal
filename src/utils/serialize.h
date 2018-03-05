@@ -521,9 +521,9 @@ template<typename T> unsigned int GetSerializeSize(const boost::optional<T> &ite
 template<typename Stream, typename T> void Serialize(Stream& os, const boost::optional<T>& item, int nType, int nVersion);
 template<typename Stream, typename T> void Unserialize(Stream& is, boost::optional<T>& item, int nType, int nVersion);
 */
-template<typename T> unsigned int GetSerializeSize(const shared_ptr<T> &item, int nType, int nVersion);
-template<typename Stream, typename T> void Serialize(Stream& os, const shared_ptr<T>& item, int nType, int nVersion);
-template<typename Stream, typename T> void Unserialize(Stream& is, shared_ptr<T>& item, int nType, int nVersion);
+template<typename T> unsigned int GetSerializeSize(const std::shared_ptr<T> &item, int nType, int nVersion);
+template<typename Stream, typename T> void Serialize(Stream& os, const std::shared_ptr<T>& item, int nType, int nVersion);
+template<typename Stream, typename T> void Unserialize(Stream& is, std::shared_ptr<T>& item, int nType, int nVersion);
 
 /**
  * array
@@ -737,7 +737,7 @@ void Unserialize(Stream& is, CScript& v, int nType, int nVersion)
  */
 template<typename T>
 //unsigned int GetSerializeSize(const boost::optional<T> &item, int nType, int nVersion)
-unsigned int GetSerializeSize(const shared_ptr<T> &item, int nType, int nVersion)
+unsigned int GetSerializeSize(const std::shared_ptr<T> &item, int nType, int nVersion)
 {
     if (item) {
         return 1 + GetSerializeSize(*item, nType, nVersion);
@@ -748,7 +748,7 @@ unsigned int GetSerializeSize(const shared_ptr<T> &item, int nType, int nVersion
 
 template<typename Stream, typename T>
 // void Serialize(Stream& os, const boost::optional<T>& item, int nType, int nVersion)
-void Serialize(Stream& os, const shared_ptr<T>& item, int nType, int nVersion)
+void Serialize(Stream& os, const std::shared_ptr<T>& item, int nType, int nVersion)
 {
     // If the value is there, put 0x01 and then serialize the value.
     // If it's not, put 0x00.
@@ -764,7 +764,7 @@ void Serialize(Stream& os, const shared_ptr<T>& item, int nType, int nVersion)
 
 template<typename Stream, typename T>
 //void Unserialize(Stream& is, boost::optional<T>& item, int nType, int nVersion)
-void Unserialize(Stream& is, shared_ptr<T>& item, int nType, int nVersion)
+void Unserialize(Stream& is, std::shared_ptr<T>& item, int nType, int nVersion)
 {
     unsigned char discriminant = 0x00;
     Unserialize(is, discriminant, nType, nVersion);
@@ -776,7 +776,7 @@ void Unserialize(Stream& is, shared_ptr<T>& item, int nType, int nVersion)
         T object;
         Unserialize(is, object, nType, nVersion);
         //item = object;
-        item = make_shared<T>(object);
+        item = std::make_shared<T>(object);
     } else {
         throw std::ios_base::failure("non-canonical optional discriminant");
     }
