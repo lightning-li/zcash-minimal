@@ -8,8 +8,8 @@ JSDescription::JSDescription(ZCJoinSplit& params,
                 const std::array<libzcash::JSOutput, ZC_NUM_JS_OUTPUTS>& outputs,
                 int64_t vpub_old,
                 int64_t vpub_new,
-                bool computeProof = true,
-                uint256 *esk = nullptr    
+                bool computeProof,
+                uint256 *esk    
                 ) : vpub_old(vpub_old), vpub_new(vpub_new), anchor(anchor)
 {
     std::array<libzcash::Note, ZC_NUM_JS_OUTPUTS> notes;
