@@ -108,10 +108,10 @@ void IncrementalMerkleTree<Depth, Hash>::append(Hash obj) {
 
     if (!left) {
         // Set the left leaf
-        left = make_shared<Hash>(obj);
+        left = std::make_shared<Hash>(obj);
     } else if (!right) {
         // Set the right leaf
-        right = make_shared<Hash>(obj);
+        right = std::make_shared<Hash>(obj);
     } else {
         // Combine the leaves and propagate it up the tree
         //boost::optional<Hash> combined = Hash::combine(*left, *right);
