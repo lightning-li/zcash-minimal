@@ -22,6 +22,6 @@ template<typename RandomAccessIterator, typename MapRandomAccessIterator>
 void MappedShuffle(RandomAccessIterator first,
                    MapRandomAccessIterator mapFirst,
                    size_t len,
-                   std::function<int(int> gen);
+                   std::function<int(int)> gen);
 
 #endif
