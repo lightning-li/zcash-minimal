@@ -4,8 +4,6 @@ project(zcash-minimal)
 
 execute_process(COMMAND make all WORKING_DIRECTORY ${ZCASH_MINIMAL_SOURCE}/3rd)
 
-add_subdirectory(zcash)
-
 set(ZCASH_MINIMAL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${ZCASH_MINIMAL_SOURCE}
@@ -23,3 +21,5 @@ set(ZCASH_MINIMAL_DEPEND_SRC ${ZCASH_MINIMAL_SOURCE}/crypto/sha256.cpp
                              ${ZCASH_MINIMAL_SOURCE}/utils/uint256.cpp
                              ${ZCASH_MINIMAL_SOURCE}/utils/utilstrencodings.cpp
                              )
+
+add_subdirectory(zcash)
