@@ -3,6 +3,7 @@
 #include "utils/hash.h"
 #include "zcash/prf.h"
 #include "utils/streams.h"
+#include "utils/version.h"
 
 namespace libzcash {
 
