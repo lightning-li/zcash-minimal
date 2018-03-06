@@ -11,6 +11,7 @@ include_directories(${ZCASH_MINIMAL_SOURCE}
                     ${ZCASH_MINIMAL_SOURCE}/3rd/snark/build/include
                     ${ZCASH_MINIMAL_SOURCE}/3rd/snark/build/include/libsnark
                     )
+# libgmpxx.a 与 libgmp.a 的顺序不能互换
 
 set(ZCASH_DEPEND_LIBS ${ZCASH_MINIMAL_SOURCE}/3rd/snark/build/lib/libsnark.a 
                       ${ZCASH_MINIMAL_SOURCE}/3rd/libsodium-1.0.12/build/lib/libsodium.a
