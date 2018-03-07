@@ -24,7 +24,7 @@ $(SODIUM): $(wildcard libsodium-1.0.12/src/*)
 		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH)/build && $(MAKE) install
 
 $(GMP): $(wildcard gmp-6.1.2/*)
-		@echo "**************building libgmp and libgmpxx now********** && cd $(GMP_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(GMP_PATH)/build && $(MAKE) && $(MAKE) install
+		@echo "**************building libgmp and libgmpxx now********** && cd $(GMP_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(GMP_PATH)/build --enable-cxx --disable-shared && $(MAKE) && $(MAKE) install
 
 clean:\
 	SNARK_clean \
