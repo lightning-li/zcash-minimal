@@ -89,17 +89,11 @@ public:
                          const std::string pkPath)
     {
         protoboard<FieldT> pb;
-        std::cout << "1111111" << std::endl;
         joinsplit_gadget<FieldT, NumInputs, NumOutputs> g(pb);
-
         g.generate_r1cs_constraints();
-        std::cout << "2222222" << std::endl;
         auto r1cs = pb.get_constraint_system();
-        std::cout << "333333" << std::endl;
         saveToFile(r1csPath, r1cs);
-
         r1cs_ppzksnark_keypair<ppzksnark_ppT> keypair = r1cs_ppzksnark_generator<ppzksnark_ppT>(r1cs);
-        std::cout << "4444444" << std::endl;
         saveToFile(vkPath, keypair.vk);
         saveToFile(pkPath, keypair.pk);
     }
