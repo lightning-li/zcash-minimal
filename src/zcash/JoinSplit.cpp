@@ -30,7 +30,7 @@ namespace libzcash {
 //CCriticalSection cs_LoadKeys;
 std::mutex cs_ParamsIO;
 //std::mutex cs_LoadKeys;
-static const int64_t MAX_MONEY = 21000000 * 100000000;
+static const int64_t MAX_MONEY = (int64_t)21000000 * (int64_t)100000000;
 
 template<typename T>
 void saveToFile(const std::string path, T& obj) {

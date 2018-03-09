@@ -189,8 +189,10 @@ int main(int argc, char **argv)
     
     if (home == NULL || strlen(home)) {
         param_path = "/.zcash-params";
+        cout << "111111111111" << strlen(home) << endl;
     } else {
         param_path = string(home) + "/.zcash-params";
+        cout << "222222222222" << endl;
     }
 
     auto p = ZCJoinSplit::Prepared(string(param_path + "/bubi-verifying.key"),
