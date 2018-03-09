@@ -3,7 +3,7 @@ set(APP_ZCASH_MINIMAL zcash-minimal)
 set(CMAKE_CXX_STANDARD 11)
 
 aux_source_directory(${ZCASH_MINIMAL_SOURCE}/zcash APP_SRC)
-list(REMOVE_ITEM APP_SRC ${ZCASH_MINIMAL_SOURCE}/zcash/CreateJoinSplit.cpp)
+list(REMOVE_ITEM APP_SRC ${ZCASH_MINIMAL_SOURCE}/zcash/GenerateParams.cpp)
 
 # aux_source_directory(${ZCASH_MINIMAL_SOURCE}/zcash/circuit APP_SRC)
 
