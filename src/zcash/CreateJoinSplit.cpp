@@ -7,6 +7,9 @@
 #include "zcash/JoinSplit.hpp"
 #include "zcash/ShieldTransaction.h"
 #include <libsnark/common/profiling.hpp>
+#include "crypto/common.h"
+#include <array>
+#include <iostream>
 
 using namespace libzcash;
 using namespace std;
@@ -38,25 +41,25 @@ bool test_joinsplit(ZCJoinSplit* js) {
     uint64_t vpub_old = 10;
     uint64_t vpub_new = 0;
     uint256 pubKeyHash = random_uint256();
-    boost::array<uint256, 2> macs;
-    boost::array<uint256, 2> nullifiers;
-    boost::array<uint256, 2> commitments;
+    std::array<uint256, 2> macs;
+    std::array<uint256, 2> nullifiers;
+    std::array<uint256, 2> commitments;
     uint256 rt = tree.root();
-    boost::array<ZCNoteEncryption::Ciphertext, 2> ciphertexts;
+    std::array<ZCNoteEncryption::Ciphertext, 2> ciphertexts;
     ZCProof proof;
 
     {
-        boost::array<JSInput, 2> inputs = {
+        std::array<JSInput, 2> inputs = {
             JSInput(), // dummy input
             JSInput() // dummy input
         };
 
-        boost::array<JSOutput, 2> outputs = {
+        std::array<JSOutput, 2> outputs = {
             JSOutput(recipient_addr, 10),
             JSOutput() // dummy output
         };
 
-        boost::array<Note, 2> output_notes;
+        std::array<Note, 2> output_notes;
 
         // Perform the proof
         proof = js->prove(
@@ -118,7 +121,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
     pubKeyHash = random_uint256();
 
     {
-        boost::array<JSInput, 2> inputs = {
+        std::array<JSInput, 2> inputs = {
             JSInput(), // dummy input
             JSInput(witness_recipient, decrypted_note, recipient_key)
         };
@@ -126,12 +129,12 @@ bool test_joinsplit(ZCJoinSplit* js) {
         SpendingKey second_recipient = SpendingKey::random();
         PaymentAddress second_addr = second_recipient.address();
 
-        boost::array<JSOutput, 2> outputs = {
+        std::array<JSOutput, 2> outputs = {
             JSOutput(second_addr, 9),
             JSOutput() // dummy output
         };
 
-        boost::array<Note, 2> output_notes;
+        std::array<Note, 2> output_notes;
 
         // Perform the proof
         proof = js->prove(
