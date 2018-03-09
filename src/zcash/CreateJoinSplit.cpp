@@ -93,6 +93,8 @@ bool test_joinsplit(ZCJoinSplit* js) {
         rt
     )) {
         std::cout << "verify passed....." << std::endl;
+    } else {
+        return false;
     }
 
     // Recipient should decrypt
@@ -110,7 +112,10 @@ bool test_joinsplit(ZCJoinSplit* js) {
 
     auto decrypted_note = note_pt.note(recipient_addr);
 
-    ASSERT_TRUE(decrypted_note.value == 10);
+    if (decrypted_note.value != 10) {
+        cout << "error...." << endl;
+        return false;
+    }
 
     // Insert the commitments from the last tx into the tree
     tree.append(commitments[0]);
@@ -170,6 +175,8 @@ bool test_joinsplit(ZCJoinSplit* js) {
         rt
     )) {
         cout << "Congratulations!! SUCCESS" << endl;
+    } else {
+        return false;
     }
 }
 
