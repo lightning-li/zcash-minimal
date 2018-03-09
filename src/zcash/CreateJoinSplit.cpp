@@ -80,7 +80,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
     }
 
     // Verify the transaction:
-    ASSERT_TRUE(js->verify(
+    if (js->verify(
         proof,
         verifier,
         pubKeyHash,
@@ -91,7 +91,9 @@ bool test_joinsplit(ZCJoinSplit* js) {
         vpub_old,
         vpub_new,
         rt
-    ));
+    )) {
+        std::cout << "verify passed....." << std::endl;
+    }
 
     // Recipient should decrypt
     // Now the recipient should spend the money again
@@ -155,7 +157,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
     }
 
     // Verify the transaction:
-    ASSERT_TRUE(js->verify(
+    if (js->verify(
         proof,
         verifier,
         pubKeyHash,
@@ -166,8 +168,9 @@ bool test_joinsplit(ZCJoinSplit* js) {
         vpub_old,
         vpub_new,
         rt
-    ));
-    cout << "Congratulations!! SUCCESS" << endl;
+    )) {
+        cout << "Congratulations!! SUCCESS" << endl;
+    }
 }
 
 int main(int argc, char **argv)
@@ -183,8 +186,8 @@ int main(int argc, char **argv)
         param_path = string(home) + "/.zcash-params";
     }
 
-    auto p = ZCJoinSplit::Prepared(param_path + "/bubi-verifying.key"),
-                                  (param_path + "/bubi-proving.key"));
+    auto p = ZCJoinSplit::Prepared(string(param_path + "/bubi-verifying.key"),
+                                  (string(param_path + "/bubi-proving.key")));
 
     // construct a proof.
     /*
