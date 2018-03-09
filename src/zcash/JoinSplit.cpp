@@ -136,6 +136,7 @@ public:
         }
     }
 
+    // 生成零知识证据
     ZCProof prove(
         const std::array<JSInput, NumInputs>& inputs,
         const std::array<JSOutput, NumOutputs>& outputs,
@@ -147,11 +148,11 @@ public:
         std::array<uint256, NumInputs>& out_macs,
         std::array<uint256, NumInputs>& out_nullifiers,
         std::array<uint256, NumOutputs>& out_commitments,
-        uint64_t vpub_old,
-        uint64_t vpub_new,
-        const uint256& rt,
-        bool computeProof,
-        uint256 *out_esk // Payment disclosure
+        uint64_t vpub_old,     //该匿名交易透明金额的来源
+        uint64_t vpub_new,     //该匿名交易透明金额的产生/去处
+        const uint256& rt,     //该匿名交易所花费匿名 note 所在的树根哈希值
+        bool computeProof,     //标志位：是否生成零知识证明证据
+        uint256 *out_esk // Payment disclosure 
     ) {
         if (vpub_old > MAX_MONEY) {
             throw std::invalid_argument("nonsensical vpub_old value");

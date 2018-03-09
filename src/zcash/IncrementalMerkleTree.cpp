@@ -100,6 +100,16 @@ size_t IncrementalMerkleTree<Depth, Hash>::size() const {
     return ret;
 }
 
+// 向树中插入节点哈希
+// 优先将节点哈希值赋给做孩子节点
+// 例如插入 a、b、c、d、e、f、g 哈希的过程：1. 插入 a, left = a 
+// 2. 插入 b, left = a, right = b
+// 3. 插入 c, left = c, right = nullptr, parents[0] = hash(a, b) 
+// 4. 插入 d, left = c, right = d, parents[0] = hash(a, b)
+// 5. 插入 e, left = e, right = nullptr, parents[0] = nullptr, parents[1] = hash(hash(a, b), hash(c, d))
+// 6. 插入 f, left = e, right = f, parents[0] = nullptr, parents[1] = hash(hash(a, b), hash(c, d))
+// 7. 插入 g, left = g, right = nullptr, parents[0] = hash(e, f),  parents[1] = hash(hash(a, b), hash(c, d))
+
 template<size_t Depth, typename Hash>
 void IncrementalMerkleTree<Depth, Hash>::append(Hash obj) {
     if (is_complete(Depth)) {

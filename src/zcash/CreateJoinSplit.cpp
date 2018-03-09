@@ -9,6 +9,163 @@
 #include <libsnark/common/profiling.hpp>
 
 using namespace libzcash;
+using namespace std;
+
+bool generate_vk_pk(string pkFile, string vkFile, string r1csFile)
+{
+    if (init_and_check_sodium() == -1) {
+        return false;
+    }
+
+    ZCJoinSplit::Generate(r1csFile, vkFile, pkFile);
+    return true;
+}
+
+bool test_joinsplit(ZCJoinSplit* js) {
+    // Create verification context.
+    auto verifier = libzcash::ProofVerifier::Strict();
+
+    // The recipient's information.
+    SpendingKey recipient_key = SpendingKey::random();
+    PaymentAddress recipient_addr = recipient_key.address();
+
+    // Create the commitment tree
+    ZCIncrementalMerkleTree tree;
+
+    // Set up a JoinSplit description
+    uint256 ephemeralKey;
+    uint256 randomSeed;
+    uint64_t vpub_old = 10;
+    uint64_t vpub_new = 0;
+    uint256 pubKeyHash = random_uint256();
+    boost::array<uint256, 2> macs;
+    boost::array<uint256, 2> nullifiers;
+    boost::array<uint256, 2> commitments;
+    uint256 rt = tree.root();
+    boost::array<ZCNoteEncryption::Ciphertext, 2> ciphertexts;
+    ZCProof proof;
+
+    {
+        boost::array<JSInput, 2> inputs = {
+            JSInput(), // dummy input
+            JSInput() // dummy input
+        };
+
+        boost::array<JSOutput, 2> outputs = {
+            JSOutput(recipient_addr, 10),
+            JSOutput() // dummy output
+        };
+
+        boost::array<Note, 2> output_notes;
+
+        // Perform the proof
+        proof = js->prove(
+            inputs,
+            outputs,
+            output_notes,
+            ciphertexts,
+            ephemeralKey,
+            pubKeyHash,
+            randomSeed,
+            macs,
+            nullifiers,
+            commitments,
+            vpub_old,
+            vpub_new,
+            rt
+        );
+    }
+
+    // Verify the transaction:
+    ASSERT_TRUE(js->verify(
+        proof,
+        verifier,
+        pubKeyHash,
+        randomSeed,
+        macs,
+        nullifiers,
+        commitments,
+        vpub_old,
+        vpub_new,
+        rt
+    ));
+
+    // Recipient should decrypt
+    // Now the recipient should spend the money again
+    auto h_sig = js->h_sig(randomSeed, nullifiers, pubKeyHash);
+    ZCNoteDecryption decryptor(recipient_key.viewing_key());
+
+    auto note_pt = NotePlaintext::decrypt(
+        decryptor,
+        ciphertexts[0],
+        ephemeralKey,
+        h_sig,
+        0
+    );
+
+    auto decrypted_note = note_pt.note(recipient_addr);
+
+    ASSERT_TRUE(decrypted_note.value == 10);
+
+    // Insert the commitments from the last tx into the tree
+    tree.append(commitments[0]);
+    auto witness_recipient = tree.witness();
+    tree.append(commitments[1]);
+    witness_recipient.append(commitments[1]);
+    vpub_old = 0;
+    vpub_new = 1;
+    rt = tree.root();
+    pubKeyHash = random_uint256();
+
+    {
+        boost::array<JSInput, 2> inputs = {
+            JSInput(), // dummy input
+            JSInput(witness_recipient, decrypted_note, recipient_key)
+        };
+
+        SpendingKey second_recipient = SpendingKey::random();
+        PaymentAddress second_addr = second_recipient.address();
+
+        boost::array<JSOutput, 2> outputs = {
+            JSOutput(second_addr, 9),
+            JSOutput() // dummy output
+        };
+
+        boost::array<Note, 2> output_notes;
+
+        // Perform the proof
+        proof = js->prove(
+            inputs,
+            outputs,
+            output_notes,
+            ciphertexts,
+            ephemeralKey,
+            pubKeyHash,
+            randomSeed,
+            macs,
+            nullifiers,
+            commitments,
+            vpub_old,
+            vpub_new,
+            rt
+        );
+    }
+
+    // Verify the transaction:
+    ASSERT_TRUE(js->verify(
+        proof,
+        verifier,
+        pubKeyHash,
+        randomSeed,
+        macs,
+        nullifiers,
+        commitments,
+        vpub_old,
+        vpub_new,
+        rt
+    ));
+    cout << "Congratulations!! SUCCESS" << endl;
+}
 
 int main(int argc, char **argv)
 {
@@ -23,11 +180,11 @@ int main(int argc, char **argv)
         param_path = string(home) + "/.zcash-params";
     }
 
-    auto p = ZCJoinSplit::Prepared(param_path + "/sprout-verifying.key"),
-                                  (param_path + "/sprout-proving.key"));
+    auto p = ZCJoinSplit::Prepared(param_path + "/bubi-verifying.key"),
+                                  (param_path + "/bubi-proving.key"));
 
     // construct a proof.
-
+    /*
     for (int i = 0; i < 5; i++) {
         uint256 anchor = ZCIncrementalMerkleTree().root();
         uint256 pubKeyHash;
@@ -40,6 +197,7 @@ int main(int argc, char **argv)
                              0,
                              0);
     }
-
+    */
+    test_joinsplit(p);
     delete p; // not that it matters
 }
