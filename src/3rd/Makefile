@@ -17,14 +17,15 @@ all: $(SNARK)\
 	 $(SODIUM)\
 	 $(GMP)
 
-$(SNARK): $(wildcard snark/src/*)
-		@echo "**************building snark now****************" && $(AM_V_at) CXXFLAGS="$(LIBSNARK_CXXFLAGS)" $(MAKE) $(AM_MAKEFLAGS) -C $(SNARK_PATH)/ install PREFIX=build $(LIBSNARK_CONFIG_FLAGS) OPTFLAGS="-O2 -march=x86-64" 
-
+$(GMP): $(wildcard gmp-6.1.2/*)
+		@echo "**************building libgmp and libgmpxx now**********" && cd $(GMP_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(GMP_PATH)/build --enable-cxx --disable-shared && $(MAKE) && $(MAKE) install
+		
 $(SODIUM): $(wildcard libsodium-1.0.12/src/*)
 		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH)/build && $(MAKE) install
 
-$(GMP): $(wildcard gmp-6.1.2/*)
-		@echo "**************building libgmp and libgmpxx now**********" && cd $(GMP_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(GMP_PATH)/build --enable-cxx --disable-shared && $(MAKE) && $(MAKE) install
+$(SNARK): $(wildcard snark/src/*)
+		@echo "**************building snark now****************" && $(AM_V_at) CXXFLAGS="$(LIBSNARK_CXXFLAGS)" $(MAKE) $(AM_MAKEFLAGS) -C $(SNARK_PATH)/ install PREFIX=build $(LIBSNARK_CONFIG_FLAGS) OPTFLAGS="-O2 -march=x86-64" 
+
 
 clean:\
 	SNARK_clean \
