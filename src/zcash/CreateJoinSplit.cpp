@@ -10,6 +10,7 @@
 #include "crypto/common.h"
 #include <array>
 #include <iostream>
+#include <sys/time.h>
 
 using namespace libzcash;
 using namespace std;
@@ -126,6 +127,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
     vpub_new = 1;
     rt = tree.root();
     pubKeyHash = random_uint256();
+    struct timeval start, endl;
 
     {
         std::array<JSInput, 2> inputs = {
@@ -142,7 +144,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
         };
 
         std::array<Note, 2> output_notes;
-
+        gettimeofday(&start, NULL);
         // Perform the proof
         proof = js->prove(
             inputs,
@@ -159,6 +161,8 @@ bool test_joinsplit(ZCJoinSplit* js) {
             vpub_new,
             rt
         );
+        gettimeofday(&end, NULL);
+        std::cout << "generate zero knowledge needs " (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << "microseconds" << std::endl;
     }
 
     // Verify the transaction:
@@ -178,6 +182,9 @@ bool test_joinsplit(ZCJoinSplit* js) {
     } else {
         return false;
     }
+    gettimeofday(&start, NULL);
+    std::cout << "verify zero knowledge needs " (1000000 * (start.tv_sec - end.tv_sec) + (start.tv_usec - end.tv_usec)) << "microseconds" << std::endl;
+
 }
 
 int main(int argc, char **argv)
@@ -193,9 +200,12 @@ int main(int argc, char **argv)
         param_path = string(home) + "/.zcash-params";
     }
 
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     auto p = ZCJoinSplit::Prepared(string(param_path + "/bubi-verifying.key"),
                                   (string(param_path + "/bubi-proving.key")));
-
+    gettimeofday(&end, NULL);
+    std::cout << "prepared vk and pk needs " (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << "microseconds" << std::endl;
     // construct a proof.
     /*
     for (int i = 0; i < 5; i++) {
