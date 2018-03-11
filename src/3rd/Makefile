@@ -13,13 +13,13 @@ SODIUM_PATH = libsodium-1.0.12
 GMP = gmp-6.1.2/build/lib/libgmp.a 
 GMP_PATH = gmp-6.1.2
 
-all: $(SNARK)\
+all: $(GMP)\
 	 $(SODIUM)\
-	 $(GMP)
+	 $(SNARK)
 
 $(GMP): $(wildcard gmp-6.1.2/*)
 		@echo "**************building libgmp and libgmpxx now**********" && cd $(GMP_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(GMP_PATH)/build --enable-cxx --disable-shared && $(MAKE) && $(MAKE) install
-		
+
 $(SODIUM): $(wildcard libsodium-1.0.12/src/*)
 		@echo "**************building libsodium now************" && cd $(SODIUM_PATH) && ./configure --prefix=$(CURRENT_DIR)/$(SODIUM_PATH)/build && $(MAKE) install
 
