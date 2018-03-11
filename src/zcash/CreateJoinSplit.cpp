@@ -162,7 +162,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
             rt
         );
         gettimeofday(&end, NULL);
-        std::cout << "generate zero knowledge needs " (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << "microseconds" << std::endl;
+        std::cout << "generate zero knowledge needs " << (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << "microseconds" << std::endl;
     }
 
     // Verify the transaction:
@@ -183,7 +183,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
         return false;
     }
     gettimeofday(&start, NULL);
-    std::cout << "verify zero knowledge needs " (1000000 * (start.tv_sec - end.tv_sec) + (start.tv_usec - end.tv_usec)) << "microseconds" << std::endl;
+    std::cout << "verify zero knowledge needs " << (1000000 * (start.tv_sec - end.tv_sec) + (start.tv_usec - end.tv_usec)) << "microseconds" << std::endl;
 
 }
 
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
     auto p = ZCJoinSplit::Prepared(string(param_path + "/bubi-verifying.key"),
                                   (string(param_path + "/bubi-proving.key")));
     gettimeofday(&end, NULL);
-    std::cout << "prepared vk and pk needs " (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << "microseconds" << std::endl;
+    std::cout << "prepared vk and pk needs " << (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << "microseconds" << std::endl;
     // construct a proof.
     /*
     for (int i = 0; i < 5; i++) {
