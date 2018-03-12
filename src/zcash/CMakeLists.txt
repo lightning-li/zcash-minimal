@@ -15,4 +15,4 @@ MESSAGE(STATUS "ZCASH_DEPEND_LIBS:" ${ZCASH_DEPEND_LIBS})
 
 add_executable(${APP_ZCASH_MINIMAL} ${APP_ZCASH_MINIMAL_SRC})
 
-target_link_libraries(${APP_ZCASH_MINIMAL} ${ZCASH_DEPEND_LIBS} pthread fopenmp)
+target_link_libraries(${APP_ZCASH_MINIMAL} ${ZCASH_DEPEND_LIBS} pthread)
