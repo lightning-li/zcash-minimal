@@ -48,7 +48,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
     uint256 rt = tree.root();
     std::array<ZCNoteEncryption::Ciphertext, 2> ciphertexts;
     ZCProof proof;
-
+    struct timeval start, end;
     {
         std::array<JSInput, 2> inputs = {
             JSInput(), // dummy input
@@ -61,7 +61,7 @@ bool test_joinsplit(ZCJoinSplit* js) {
         };
 
         std::array<Note, 2> output_notes;
-
+        gettimeofday(&start, NULL);
         // Perform the proof
         proof = js->prove(
             inputs,
@@ -78,6 +78,9 @@ bool test_joinsplit(ZCJoinSplit* js) {
             vpub_new,
             rt
         );
+        gettimeofday(&end, NULL);
+        std::cout << "---------------generate proof needs " << (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << " microseconds" << std::endl;
+
     }
 
     // Verify the transaction:
@@ -127,7 +130,6 @@ bool test_joinsplit(ZCJoinSplit* js) {
     vpub_new = 1;
     rt = tree.root();
     pubKeyHash = random_uint256();
-    struct timeval start, end;
 
     {
         std::array<JSInput, 2> inputs = {
