@@ -19,6 +19,7 @@
 #include <mutex>
 //#include "amount.h"
 #include <iostream>
+#include <sys/time.h>
 
 using namespace libsnark;
 
@@ -154,6 +155,8 @@ public:
         bool computeProof,     //标志位：是否生成零知识证明证据
         uint256 *out_esk // Payment disclosure 
     ) {
+        struct timeval start, end;
+        gettimeofday(&start, NULL);
         if (vpub_old > MAX_MONEY) {
             throw std::invalid_argument("nonsensical vpub_old value");
         }
@@ -306,7 +309,8 @@ public:
         if(!fh.is_open()) {
             throw std::runtime_error(strprintf("could not load param file at %s", pkPath));
         }
-
+        gettimeofday(&end, NULL);
+        std::cout << "inside prove function generate proof needs " << (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << std::endl;
         return ZCProof(r1cs_ppzksnark_prover_streaming<ppzksnark_ppT>(
             fh,
             primary_input,
