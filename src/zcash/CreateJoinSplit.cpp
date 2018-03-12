@@ -202,8 +202,8 @@ int main(int argc, char **argv)
 
     struct timeval start, end;
     gettimeofday(&start, NULL);
-    auto p = ZCJoinSplit::Prepared(string(param_path + "/bubi-verifying.key"),
-                                  (string(param_path + "/bubi-proving.key")));
+    auto p = ZCJoinSplit::Prepared(string(param_path + "/sprout-verifying.key"),
+                                  (string(param_path + "/sprout-proving.key")));
     gettimeofday(&end, NULL);
     std::cout << "prepared vk and pk needs " << (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) << " microseconds" << std::endl;
     // construct a proof.
