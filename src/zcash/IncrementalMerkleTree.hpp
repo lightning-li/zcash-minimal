@@ -69,7 +69,50 @@ public:
     //BOOST_STATIC_ASSERT(Depth >= 1);
     static_assert(Depth >= 1, "Depth is not greater than 1");
     IncrementalMerkleTree() { }
+    
+    IncrementalMerkleTree(const IncrementalMerkleTree& inc) {
+        //std::cout << "IncrementalMerkleTree copy constructor................................." << std::endl;
+        if (inc.left) {
+            left = std::make_shared<Hash>(*inc.left);
+        } else {
+            left = nullptr;
+        }
 
+        if (inc.right) {
+            right = std::make_shared<Hash>(*inc.right);
+        } else {
+            right = nullptr;
+        }
+        for (auto iter = inc.parents.begin(); iter != inc.parents.end(); ++iter) {
+            if (*iter) {
+                parents.push_back(std::make_shared<Hash>(*(*iter)));
+            } else {
+                parents.push_back(nullptr);
+            }
+        }
+    }
+    IncrementalMerkleTree& operator=(const IncrementalMerkleTree& inc) {
+        //std::cout << "IncrementalMerkleTree assign constructor................................." << std::endl;
+        if (inc.left) {
+            left = std::make_shared<Hash>(*inc.left);
+        } else {
+            left = nullptr;
+        }
+
+        if (inc.right) {
+            right = std::make_shared<Hash>(*inc.right);
+        } else {
+            right = nullptr;
+        }
+        for (auto iter = inc.parents.begin(); iter != inc.parents.end(); ++iter) {
+            if (*iter) {
+                parents.push_back(std::make_shared<Hash>(*(*iter)));
+            } else {
+                parents.push_back(nullptr);
+            }
+        }
+        return *this;
+    }
     size_t DynamicMemoryUsage() const {
         return 32 + // left
                32 + // right
@@ -141,7 +184,29 @@ friend class IncrementalMerkleTree<Depth, Hash>;
 public:
     // Required for Unserialize()
     IncrementalWitness() {}
-
+    IncrementalWitness(const IncrementalWitness& inw): tree(inw.tree) {
+        // std::cout  << "IncrementalWitness copy constructor.................." << std::endl;
+        // tree = inw.tree;
+        filled = inw.filled;
+        if (inw.cursor) {
+            cursor = std::make_shared<IncrementalMerkleTree<Depth, Hash> >(*inw.cursor);
+        } else {
+            cursor = nullptr;
+        }
+        cursor_depth = inw.cursor_depth;
+    }
+    IncrementalWitness& operator=(const IncrementalWitness& inw) {
+        //std::cout  << "IncrementalWitness assign constructor.................." << std::endl;
+        tree = inw.tree;
+        filled = inw.filled;
+        if (inw.cursor) {
+            cursor = std::make_shared<IncrementalMerkleTree<Depth, Hash> >(*inw.cursor);
+        } else {
+            cursor = nullptr;
+        }
+        cursor_depth = inw.cursor_depth;
+        return *this;
+    }
     MerklePath path() const {
         return tree.path(partial_path());
     }
